@@ -2,12 +2,14 @@ class BooksController < ApplicationController
   before_action :ensure_correct_user, only: [:edit, :update]
 
   def show
-    @book = Book.includes(:favorites).find(params[:id])
+    @book = Book.includes(:favorites, book_comments: { user: { profile_image_attachment: :blob } })
+                .find(params[:id])
   end
 
   def index
     @book = Book.new
-    @books = Book.all.includes(:favorites, user: { profile_image_attachment: :blob })
+    @books = Book.all
+                 .includes(:favorites, :book_comments, user: { profile_image_attachment: :blob })
   end
 
   def create

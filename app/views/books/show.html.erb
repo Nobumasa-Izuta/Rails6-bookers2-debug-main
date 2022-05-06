@@ -4,7 +4,7 @@
       <h2>User info</h2>
       <%= render 'users/info', user: @book.user %>
       <h2 class="mt-3">New book</h2>
-      <%= render 'form', book: Book.new %>
+      <%= render 'books/form', book: Book.new %>
     </div>
     <div class='col-md-8 offset-md-1'>
   		<h2>Book detail</h2>
@@ -28,6 +28,7 @@
               <% end %>
             <% end %>
           </td>
+          <td>コメント数: <%= @book.book_comments.size %></td>
 
           <% if @book.user == current_user %>
             <td><%= link_to 'Edit', edit_book_path(@book), class: "btn btn-sm btn-success edit_book_#{@book.id}" %></td>
@@ -35,6 +36,36 @@
           <% end %>
         </tr>
       </table>
+
+  		<h2>Book comments</h2>
+      <table class="table">
+        <% @book.book_comments.each do |book_comment| %>
+          <tr>
+            <td>
+              <%= link_to user_path(book_comment.user_id) do %>
+                <%= image_tag book_comment.user.get_profile_image, size:"40x40" %><br>
+                <%= book_comment.user.name %>
+              <% end %>
+            </td>
+            <td><%= book_comment.comment %></td>
+            <td>
+              <% if book_comment.user_id == current_user.id %>
+                <%= link_to 'Destroy',
+                            book_book_comment_path(book_comment.book_id, book_comment.id),
+                            method: :delete, class: 'btn btn-sm btn-danger' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+
+      <%= form_with model: BookComment.new(book_id: @book.id, user_id: current_user.id), url: book_book_comments_path(book_id: @book.id) do |f| %>
+        <%= f.hidden_field :book_id %>
+        <%= f.hidden_field :user_id %>
+
+        <div><%= f.text_area :comment, cols: 80, required: true %></div>
+        <div><%= f.submit '送信' %></div>
+      <% end %>
     </div>
   </div>
 </div>
