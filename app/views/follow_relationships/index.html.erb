@@ -1,0 +1,7 @@
+<h1>Follow Users</h1>
+
+<% if @users.size.zero? %>
+  ユーザーはいません
+<% else %>
+  <%= render 'users/index', users: @users %>
+<% end %>

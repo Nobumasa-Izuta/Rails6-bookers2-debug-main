@@ -6,10 +6,15 @@ Rails.application.routes.draw do
   get "home/about"=>"homes#about"
 
   resources :books, only: [:index,:show,:edit,:create,:destroy,:update] do
-    resource :favorites, only: %W[create destroy]
-    resources :book_comments, only: %W[create destroy]
+    resource :favorites, only: %w[create destroy]
+    resources :book_comments, only: %w[create destroy]
   end
-  resources :users, only: [:index,:show,:edit,:update]
+
+  resources :users, only: [:index,:show,:edit,:update] do
+    resource :relationships, only: %w[create destroy]
+    resources :follow_relationships, only: :index
+    resources :follower_relationships, only: :index
+  end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
 
