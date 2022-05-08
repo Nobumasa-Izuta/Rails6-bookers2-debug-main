@@ -28,6 +28,13 @@
               <i class="fas fa-sign-out-alt"></i> logout
             <% end %>
           </li>
+          <li>
+            <%= form_with url: books_path, method: :get do |category_search_form| %>
+              <%= category_search_form.hidden_field :sort_column, value: params[:sort_column] %>
+              <%= category_search_form.text_field :category %>
+              <%= category_search_form.submit "検索", class: 'btn btn-info' %>
+            <% end %>
+          </li>
         <% else %>
           <li>
             <%= link_to root_path,class: 'nav-link text-light' do %>

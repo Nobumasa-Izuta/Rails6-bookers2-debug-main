@@ -19,4 +19,10 @@ class Book < ApplicationRecord
             "%#{text}%"
           end)
   }
+
+  scope :filter_by_category, lambda { |category|
+    return all if category.blank?
+
+    where('category LIKE ?', "%#{category}%")
+  }
 end

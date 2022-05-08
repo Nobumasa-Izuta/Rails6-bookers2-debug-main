@@ -8,7 +8,8 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
-    @books = Book.order((params[:sort_column].presence || 'created_at').to_sym => :desc)
+    @books = Book.order((index_params[:sort_column].presence || 'created_at').to_sym => :desc)
+                 .filter_by_category(index_params[:category])
                  .includes(:favorites, :book_comments, user: { profile_image_attachment: :blob })
   end
 
@@ -45,11 +46,15 @@ class BooksController < ApplicationController
   private
 
   def new_book_params
-    params.require(:book).permit(:title, :body, :rating)
+    params.require(:book).permit(:title, :body, :category, :rating)
   end
 
   def edit_book_params
-    params.require(:book).permit(:title, :body)
+    params.require(:book).permit(:title, :body, :category)
+  end
+
+  def index_params
+    params.permit(:category, :sort_column)
   end
 
   def ensure_correct_user
