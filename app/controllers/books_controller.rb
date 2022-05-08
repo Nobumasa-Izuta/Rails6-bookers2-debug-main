@@ -8,7 +8,7 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
-    @books = Book.all
+    @books = Book.order((params[:sort_column].presence || 'created_at').to_sym => :desc)
                  .includes(:favorites, :book_comments, user: { profile_image_attachment: :blob })
   end
 
