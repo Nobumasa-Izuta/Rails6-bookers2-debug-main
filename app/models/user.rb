@@ -15,10 +15,22 @@ class User < ApplicationRecord
 
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }
-
-  
   
   def get_profile_image
     (profile_image.attached?) ? profile_image : 'no_image.jpg'
   end
+
+  scope :filter_by_name, lambda { |text, matcher|
+    where('name LIKE ?',
+          case matcher
+          when '完全一致'
+            text
+          when '前方一致'
+            "#{text}%"
+          when '後方一致'
+            "%#{text}"
+          when '部分一致'
+            "%#{text}%"
+          end)
+  }
 end
