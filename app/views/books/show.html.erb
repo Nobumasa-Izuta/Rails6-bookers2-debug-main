@@ -11,7 +11,7 @@
   		<table class='table'>
   		  <tr>
           <td><%= link_to(@book.user) do %>
-            <%= image_tag @book.user.get_profile_image, size:"100x100" %><br>
+            <%= image_tag @book.user.get_profile_image, size:"50x50" %><br>
             <%= @book.user.name %>
             <% end %>
           </td>
@@ -19,6 +19,7 @@
           <td><%= @book.body %></td>
           <td><%= render 'favorites/favorite_button', book: @book %></td>
           <td>コメント数: <%= @book.book_comments.size %></td>
+          <td><%= tag.div class: 'evaluate_star', data: { rating: @book.rating.to_f } %></td>
 
           <% if @book.user == current_user %>
             <td><%= link_to 'Edit', edit_book_path(@book), class: "btn btn-sm btn-success edit_book_#{@book.id}" %></td>
@@ -42,3 +43,17 @@
     </div>
   </div>
 </div>
+
+<script>
+  $('.evaluate_star').empty().raty({
+    starOn: "<%= asset_path('star-on.png') %>",
+    starOff: "<%= asset_path('star-off.png') %>",
+    starHalf: "<%= asset_path('star-half.png') %>",
+    scoreName: 'book[rating]',
+    half: true,
+    readOnly: true,
+    score: function() {
+      return this.dataset.rating;
+    }
+  });
+</script>
