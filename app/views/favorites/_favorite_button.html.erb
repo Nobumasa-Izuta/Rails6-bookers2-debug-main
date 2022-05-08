@@ -1,0 +1,11 @@
+<%= tag.span id: "book-#{book.id}-favorite-btn" do %>
+  <% if book.favorites.any? { |favorite| favorite.user_id == current_user.id } %>
+    <%= link_to book_favorites_path(book_id: book.id, return_url: request.url), method: :delete, remote: true do %>
+      ♥<%= book.favorites.size %>
+    <% end %>
+  <% else %>
+    <%= link_to book_favorites_path(book_id: book.id, return_url: request.url), method: :post, remote: true do %>
+      ♡<%= book.favorites.size %>
+    <% end %>
+  <% end %>
+<% end %>

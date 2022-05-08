@@ -1,0 +1,4 @@
+var id = "#<%= "book-#{@favorite.book_id}-favorite-btn" %>";
+var template = "<%= escape_javascript(render(partial: 'favorites/favorite_button', locals: { book: @favorite.book })) %>";
+
+$(id).html(template);
